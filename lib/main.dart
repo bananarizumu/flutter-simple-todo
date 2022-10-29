@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_simple_todo/ui/todo_list/todo_list_screen.dart';
+import 'package:flutter_simple_todo/route/app_router.gr.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(
-    const ProviderScope(
+    ProviderScope(
       child: App(),
     ),
   );
 }
 
 class App extends HookConsumerWidget {
-  const App({Key? key}) : super(key: key);
+  final _appRouter = AppRouter();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return MaterialApp(
-      home: HomeScreen(),
+    return MaterialApp.router(
+      routerDelegate: _appRouter.delegate(),
+      routeInformationParser: _appRouter.defaultRouteParser(),
     );
   }
 }
