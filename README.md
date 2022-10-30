@@ -1,16 +1,20 @@
-# flutter_simple_todo
+## flutter_simple_todo
+簡単なTODOリストアプリです 
 
-A new Flutter project.
+ <img src="https://user-images.githubusercontent.com/66051746/198883933-2d4ad473-4021-423d-bc6c-5fdb4dbba731.gif" width ="300">
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+ 
+##  構成
+- 状態管理パターンとしては`riverpod` + `flutter hooks` + `freezed`を採用
+- DBはFireStoreを採用
+- 画面遷移には`auto_route`を採用
+ 
+## 設計
+簡易的なMVVMパターンを採用
+```mermaid
+classDiagram
+    View ..>  ViewModel 
+    ViewModel ..> Repository
+    ViewModel ..> State
+    Repository ..> RemoteDataSource
+```
