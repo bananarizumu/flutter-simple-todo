@@ -1,0 +1,82 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_simple_todo/viewmodel/todo_detail_view_model/todo_detail_view_model.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import '../../data/model/todo.dart';
+import '../widgets/multi_line_text_field.dart';
+import '../widgets/single_line_text_field.dart';
+
+class TodoDetailScreen extends HookConsumerWidget {
+  final Todo _todo;
+
+  TextEditingController _titleController = TextEditingController();
+  TextEditingController _detailController = TextEditingController();
+
+  TodoDetailScreen(
+    this._todo,
+  );
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final todoDetailViewModel = ref.read(todoDetailViewModelProvider.notifier);
+    final todoDetailState = ref.watch(todoDetailViewModelProvider);
+    bool _isEnabled = todoDetailState.title?.isNotEmpty == true &&
+        todoDetailState.detail?.isNotEmpty == true;
+    useEffect(
+      () {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _titleController.text = _todo.title ?? "";
+          _detailController.text = _todo.detail ?? "";
+        });
+      },
+      const [],
+    );
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(_todo.title ?? ""),
+      ),
+      body: Container(
+        padding: EdgeInsets.all(20.0),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              SingleLineTextField(
+                Icons.title,
+                'タイトル',
+                'タイトルを入力してください',
+                _titleController,
+                validate: true,
+                onChanged: (String newValue) {
+                  todoDetailViewModel.setTitle(newValue);
+                },
+              ),
+              SizedBox(height: 4),
+              MultiLineTextField(
+                Icons.edit,
+                '詳細',
+                '詳細を入力してください',
+                _detailController,
+                validate: true,
+                onChanged: (String newValue) {
+                  todoDetailViewModel.setDetail(newValue);
+                },
+              ),
+              SizedBox(height: 4),
+              ElevatedButton(
+                child: const Text('Edit'),
+                onPressed: !_isEnabled
+                    ? null
+                    : () {
+                        todoDetailViewModel.saveTodo(_todo.id);
+                      },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

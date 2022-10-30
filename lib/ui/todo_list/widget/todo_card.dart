@@ -33,9 +33,7 @@ class TodoCard extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.details),
                 tooltip: _todo.detail,
-                onPressed: () async {
-                  // TODO: detailに遷移
-                },
+                onPressed: () async {},
               )
             ].toList(),
           )

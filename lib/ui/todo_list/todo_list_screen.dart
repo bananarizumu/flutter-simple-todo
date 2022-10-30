@@ -37,6 +37,16 @@ class HomeScreen extends HookConsumerWidget {
       body: Center(
         child: ListView.builder(
           itemBuilder: (context, n) {
+            return GestureDetector(
+              onTap: () {
+                AutoRouter.of(context).push(
+                  TodoDetailRoute(
+                    todo: todoListState.todoList[n],
+                  ),
+                );
+              },
+              child: TodoCard(todoListState.todoList[n]),
+            );
             // if (n.isOdd) {
             //   return Divider(color: Colors.blueGrey[300]);
             // }
