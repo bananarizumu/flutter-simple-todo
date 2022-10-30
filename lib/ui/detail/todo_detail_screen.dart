@@ -36,6 +36,20 @@ class TodoDetailScreen extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(_todo.title ?? ""),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.delete),
+            iconSize: 30.0,
+            onPressed: () async {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return _deleteDialog(context, todoDetailViewModel);
+                },
+              );
+            },
+          )
+        ],
       ),
       body: Container(
         padding: EdgeInsets.all(20.0),
@@ -77,6 +91,26 @@ class TodoDetailScreen extends HookConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _deleteDialog(BuildContext context, TodoDetailViewModel viewModel) {
+    return AlertDialog(
+      // title: Text("タイトル"),
+      content: Text("本当に削除しますか？"),
+      actions: <Widget>[
+        // ボタン領域
+        ElevatedButton(
+          child: Text("Cancel"),
+          onPressed: () => Navigator.pop(context),
+        ),
+        ElevatedButton(
+          child: Text("OK"),
+          onPressed: () {
+            viewModel.deleteTodo(_todo.id);
+          },
+        ),
+      ],
     );
   }
 }

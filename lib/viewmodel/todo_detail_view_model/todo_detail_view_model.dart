@@ -51,9 +51,9 @@ class TodoDetailViewModel extends StateNotifier<TodoDetailState> {
     }
   }
 
-  // Future<void> fetchTodo() {
-  //   return _todoRepository.getTodo().then((value) {
-  //     state = state.copyWith(todoList: value);
-  //   });
-  // }
+  Future<void> deleteTodo(String? id) async {
+    if (id != null) {
+      await _todoRepository.deleteTodo(id);
+    }
+  }
 }

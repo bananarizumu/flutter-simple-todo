@@ -10,6 +10,7 @@ final todoRepositoryProvider =
 abstract class TodoRepository {
   Future<List<Todo>> getTodo();
   Future<void> saveTodo(Todo todo);
+  Future<void> deleteTodo(String id);
 }
 
 class TodoRepositoryImpl implements TodoRepository {
@@ -43,5 +44,9 @@ class TodoRepositoryImpl implements TodoRepository {
           .doc()
           .update({'todoSize': FieldValue.increment(1)});
     }
+  }
+
+  Future<void> deleteTodo(String todoId) async {
+    await _database.collection(_toDoCollection).doc(todoId).delete();
   }
 }
