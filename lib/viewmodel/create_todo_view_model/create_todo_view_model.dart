@@ -39,7 +39,7 @@ class CreateTodoViewModel extends StateNotifier<CreateTodoState> {
   Future<void> saveTodo() async {
     try {
       await _todoRepository.saveTodo(
-        Todo(id: null, title: state.title, detail: state.title),
+        Todo(id: null, title: state.title, detail: state.detail),
       );
     } catch (e) {
       print(e);

@@ -29,7 +29,12 @@ class HomeScreen extends HookConsumerWidget {
             icon: Icon(Icons.add),
             iconSize: 30.0,
             onPressed: () async {
-              AutoRouter.of(context).push(const CreateTodoRoute());
+              AutoRouter.of(context)
+                  .push(const CreateTodoRoute())
+                  .then((value) {
+                todoListViewModel.fetchTodo();
+              });
+              ;
             },
           )
         ],
@@ -38,19 +43,29 @@ class HomeScreen extends HookConsumerWidget {
         child: ListView.builder(
           itemBuilder: (context, n) {
             return GestureDetector(
-              onTap: () {
-                AutoRouter.of(context).push(
-                  TodoDetailRoute(
-                    todo: todoListState.todoList[n],
-                  ),
-                );
+              onTap: () async {
+                await AutoRouter.of(context)
+                    .push(TodoDetailRoute(
+                  todo: todoListState.todoList[n],
+                ))
+                    .then((value) {
+                  todoListViewModel.fetchTodo();
+                });
+                ;
               },
-              child: TodoCard(todoListState.todoList[n]),
+              // child: TodoCard(todoListState.todoList[n]),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Colors.black12,
+                      width: 1,
+                    ),
+                  ),
+                ),
+                child: TodoCard(todoListState.todoList[n]),
+              ),
             );
-            // if (n.isOdd) {
-            //   return Divider(color: Colors.blueGrey[300]);
-            // }
-            return TodoCard(todoListState.todoList[n]);
           },
           itemCount: todoListState.todoList.length,
         ),

@@ -36,7 +36,7 @@ class TodoCard extends StatelessWidget {
                 onPressed: () async {},
               )
             ].toList(),
-          )
+          ),
         ],
       ),
     );

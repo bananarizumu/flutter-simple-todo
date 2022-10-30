@@ -1,9 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_simple_todo/viewmodel/todo_detail_view_model/todo_detail_view_model.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../data/model/todo.dart';
+import '../../route/app_router.gr.dart';
 import '../widgets/multi_line_text_field.dart';
 import '../widgets/single_line_text_field.dart';
 
@@ -28,6 +30,8 @@ class TodoDetailScreen extends HookConsumerWidget {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           _titleController.text = _todo.title ?? "";
           _detailController.text = _todo.detail ?? "";
+          print(
+              "hgahgrhagh " + (_todo.title ?? "") + " " + (_todo.detail ?? ""));
         });
       },
       const [],
@@ -62,7 +66,7 @@ class TodoDetailScreen extends HookConsumerWidget {
                 'タイトル',
                 'タイトルを入力してください',
                 _titleController,
-                validate: true,
+                validate: false,
                 onChanged: (String newValue) {
                   todoDetailViewModel.setTitle(newValue);
                 },
@@ -73,7 +77,7 @@ class TodoDetailScreen extends HookConsumerWidget {
                 '詳細',
                 '詳細を入力してください',
                 _detailController,
-                validate: true,
+                validate: false,
                 onChanged: (String newValue) {
                   todoDetailViewModel.setDetail(newValue);
                 },
@@ -83,8 +87,9 @@ class TodoDetailScreen extends HookConsumerWidget {
                 child: const Text('Edit'),
                 onPressed: !_isEnabled
                     ? null
-                    : () {
-                        todoDetailViewModel.saveTodo(_todo.id);
+                    : () async {
+                        await todoDetailViewModel.saveTodo(_todo.id);
+                        AutoRouter.of(context).pop(HomeRoute.name);
                       },
               ),
             ],
@@ -106,8 +111,9 @@ class TodoDetailScreen extends HookConsumerWidget {
         ),
         ElevatedButton(
           child: Text("OK"),
-          onPressed: () {
-            viewModel.deleteTodo(_todo.id);
+          onPressed: () async {
+            await viewModel.deleteTodo(_todo.id);
+            AutoRouter.of(context).pop(HomeRoute.name);
           },
         ),
       ],

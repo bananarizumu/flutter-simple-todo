@@ -1,0 +1,8 @@
+{
+<<<<<<< HEAD
+  "flutterSdkVersion": "stable",
+=======
+  "flutterSdkVersion": "3.3.6",
+>>>>>>> init
+  "flavors": {}
+}

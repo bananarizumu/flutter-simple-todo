@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../route/app_router.gr.dart';
 import '../../viewmodel/create_todo_view_model/create_todo_view_model.dart';
 import '../widgets/multi_line_text_field.dart';
 import '../widgets/single_line_text_field.dart';
@@ -33,7 +35,7 @@ class CreateTodoScreen extends HookConsumerWidget {
                 'タイトル',
                 'タイトルを入力してください',
                 _titleController,
-                validate: true,
+                validate: _titleController.text.isEmpty,
                 onChanged: (String newValue) {
                   createTodoViewModel.setTitle(newValue);
                 },
@@ -44,7 +46,7 @@ class CreateTodoScreen extends HookConsumerWidget {
                 '詳細',
                 '詳細を入力してください',
                 _detailController,
-                validate: true,
+                validate: false,
                 onChanged: (String newValue) {
                   createTodoViewModel.setDetail(newValue);
                 },
@@ -55,7 +57,9 @@ class CreateTodoScreen extends HookConsumerWidget {
                 onPressed: !_isEnabled
                     ? null
                     : () {
-                        createTodoViewModel.saveTodo();
+                        createTodoViewModel.saveTodo().then((value) {
+                          AutoRouter.of(context).pop(HomeRoute.name);
+                        });
                       },
               ),
             ],
