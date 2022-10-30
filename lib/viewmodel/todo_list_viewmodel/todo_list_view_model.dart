@@ -29,7 +29,7 @@ class TodoListViewModel extends StateNotifier<TodoListState> {
 
   Future<void> fetchTodo() {
     return _todoRepository.getTodo().then((value) {
-      state.copyWith(todoList: value);
+      state = state.copyWith(todoList: value);
     });
   }
 }

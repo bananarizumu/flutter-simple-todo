@@ -7,10 +7,11 @@ class MultiLineTextField extends StatelessWidget {
   final String _errorText;
   final bool validate;
   final TextEditingController _controller;
+  final Function(String)? onChanged;
 
   MultiLineTextField(
       this._icon, this._hintText, this._errorText, this._controller,
-      {this.validate = false});
+      {this.validate = false, this.onChanged = null});
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +23,7 @@ class MultiLineTextField extends StatelessWidget {
       _controller,
       obscureText: false,
       validate: validate,
+      onChanged: onChanged,
     );
   }
 }

@@ -9,6 +9,7 @@ class InputField extends StatelessWidget {
   final bool obscureText;
   final int _maxLines;
   final TextEditingController _controller;
+  final Function(String)? onChanged;
 
   InputField(
     this._icon,
@@ -18,6 +19,7 @@ class InputField extends StatelessWidget {
     this._controller, {
     this.obscureText = false,
     this.validate = false,
+    this.onChanged = null,
   });
 
   @override
@@ -28,6 +30,7 @@ class InputField extends StatelessWidget {
       autocorrect: false,
       obscureText: obscureText,
       style: const TextStyle(fontSize: 16, color: Colors.black),
+      onChanged: onChanged,
       decoration: InputDecoration(
           border: OutlineInputBorder(),
           prefixIcon: Icon(_icon),

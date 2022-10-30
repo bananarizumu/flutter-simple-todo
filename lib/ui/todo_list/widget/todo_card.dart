@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import '../../../data/model/todo.dart';
+
 class TodoCard extends StatelessWidget {
+  TodoCard(this._todo);
+  final Todo _todo;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -16,7 +21,7 @@ class TodoCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Text(
-                "TODO ITEM",
+                _todo.title ?? "",
                 style: TextStyle(
                     fontSize: 20.0,
                     decoration: TextDecoration.combine([TextDecoration.none])),
@@ -27,7 +32,7 @@ class TodoCard extends StatelessWidget {
             children: <Widget>[
               IconButton(
                 icon: const Icon(Icons.details),
-                tooltip: 'detail',
+                tooltip: _todo.detail,
                 onPressed: () async {
                   // TODO: detailに遷移
                 },

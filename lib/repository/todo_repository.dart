@@ -9,6 +9,7 @@ final todoRepositoryProvider =
 
 abstract class TodoRepository {
   Future<List<Todo>> getTodo();
+  Future<void> saveTodo(Todo todo);
 }
 
 class TodoRepositoryImpl implements TodoRepository {
@@ -21,26 +22,26 @@ class TodoRepositoryImpl implements TodoRepository {
     final querySnapshot = await _database.collection(_toDoCollection).get();
     List<Todo> todoList = [];
     for (var item in querySnapshot.docs) {
-      todoList.add(Todo.fromJson(item.data()));
+      Map<String, dynamic> map = item.data();
+      map["id"] = item.id;
+      todoList.add(Todo.fromJson(map));
     }
     return todoList;
   }
-}
 
-// final firebasePod = Provider((_) => FirebaseFirestore.instance);
-// final todoServicePod = Provider<TodoService>((ref) {
-//   return TodoService(ref.read(firebasePod));
-// });
-// final todoRepositoryPod = Provider<TodoRepository>(
-//       (ref) => TodoRepository(ref.read(todoServicePod)),
-// );
-// final todoListPod = StreamProvider.family<List<Todo>>(
-//       (ref, catId) => ref.watch(todoRepositoryPod).getTodosByCategory(),
-// );
-//
-// class TodoRepository {
-//   TodoRepository(this._todoService);
-//   final TodoService _todoService;
-//
-//   Stream<List<Todo>> getTodosByCategory() => _todoService.getTodosByCategory();
-// }
+  @override
+  Future<void> saveTodo(Todo todo) async {
+    if (todo.id != null) {
+      await _database
+          .collection(_toDoCollection)
+          .doc(todo.id)
+          .update(todo.toJson());
+    } else {
+      await _database.collection(_toDoCollection).add(todo.toJson());
+      await _database
+          .collection(_toDoCollection)
+          .doc()
+          .update({'todoSize': FieldValue.increment(1)});
+    }
+  }
+}

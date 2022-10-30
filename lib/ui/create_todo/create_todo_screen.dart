@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../viewmodel/create_todo_view_model/create_todo_view_model.dart';
 import '../widgets/multi_line_text_field.dart';
 import '../widgets/single_line_text_field.dart';
 
@@ -11,7 +12,11 @@ class CreateTodoScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    bool _isEnabled = false;
+    final createTodoViewModel = ref.read(createTodoViewModelProvider.notifier);
+    final todoListState = ref.watch(createTodoViewModelProvider);
+
+    bool _isEnabled =
+        todoListState.title.isNotEmpty && todoListState.detail.isNotEmpty;
 
     return Scaffold(
       appBar: AppBar(
@@ -29,6 +34,9 @@ class CreateTodoScreen extends HookConsumerWidget {
                 'タイトルを入力してください',
                 _titleController,
                 validate: true,
+                onChanged: (String newValue) {
+                  createTodoViewModel.setTitle(newValue);
+                },
               ),
               SizedBox(height: 4),
               MultiLineTextField(
@@ -37,6 +45,9 @@ class CreateTodoScreen extends HookConsumerWidget {
                 '詳細を入力してください',
                 _detailController,
                 validate: true,
+                onChanged: (String newValue) {
+                  createTodoViewModel.setDetail(newValue);
+                },
               ),
               SizedBox(height: 4),
               ElevatedButton(
@@ -44,7 +55,7 @@ class CreateTodoScreen extends HookConsumerWidget {
                 onPressed: !_isEnabled
                     ? null
                     : () {
-                        // 何かEnableの時の処理
+                        createTodoViewModel.saveTodo();
                       },
               ),
             ],

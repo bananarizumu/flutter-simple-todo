@@ -13,11 +13,14 @@ class HomeScreen extends HookConsumerWidget {
     final todoListViewModel = ref.read(todoListViewModelProvider.notifier);
     final todoListState = ref.watch(todoListViewModelProvider);
 
-    useEffect(() {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        todoListViewModel.fetchTodo();
-      });
-    });
+    useEffect(
+      () {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          todoListViewModel.fetchTodo();
+        });
+      },
+      const [],
+    );
     return Scaffold(
       appBar: AppBar(
         title: Text("TODO APP"),
@@ -34,13 +37,12 @@ class HomeScreen extends HookConsumerWidget {
       body: Center(
         child: ListView.builder(
           itemBuilder: (context, n) {
-            if (n.isOdd) {
-              return Divider(color: Colors.blueGrey[300]);
-            }
-            return TodoCard();
+            // if (n.isOdd) {
+            //   return Divider(color: Colors.blueGrey[300]);
+            // }
+            return TodoCard(todoListState.todoList[n]);
           },
-          // TODO
-          itemCount: 3,
+          itemCount: todoListState.todoList.length,
         ),
       ),
     );

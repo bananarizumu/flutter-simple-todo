@@ -7,10 +7,16 @@ class SingleLineTextField extends StatelessWidget {
   final String _errorText;
   final bool validate;
   final TextEditingController _controller;
+  final Function(String)? onChanged;
 
   SingleLineTextField(
-      this._icon, this._hintText, this._errorText, this._controller,
-      {this.validate = false});
+    this._icon,
+    this._hintText,
+    this._errorText,
+    this._controller, {
+    this.validate = false,
+    this.onChanged = null,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +28,7 @@ class SingleLineTextField extends StatelessWidget {
       _controller,
       obscureText: false,
       validate: validate,
+      onChanged: onChanged,
     );
   }
 }
